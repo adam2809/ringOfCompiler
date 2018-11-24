@@ -20,4 +20,5 @@ from game import views
 
 urlpatterns = [
     url(r'^$', views.homePage),
+    url(r'^/game$', views.gamePage),
 ]
