@@ -7,7 +7,10 @@ class Task(models.Model):
     inputDesription = models.TextField(default='')
     outputDescription = models.TextField(default='')
 
+
 class Test(models.Model):
-    pass
+    input = models.TextField(default='')
+    output = models.TextField(default='')
+    task = models.IntegerField(default=0)
     # TODO implement this table to have a forgein key of task ID, desired input
     # and output

@@ -1,0 +1,123 @@
+<!doctype <!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Ring of Compiler</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    
+    <link rel="stylesheet" type = "text/css" href= "plugin/codemirror/lib/codemirror.css">
+    <script src="plugin/codemirror/lib/codemirror.js"></script>
+    <script src="plugin/codemirror/mode/python/python.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+	<style>
+			.bg-1 { 
+                    
+					 background-color: #1abc9c; /* Green */
+						color: #ffffff;
+                    padding-left: 20px;
+                    padding-right: 20px;
+                    padding-bottom: 20px;
+				}
+            .bg-2 { 
+                    text-align: justify;
+                    background-color:grey; /* Green */
+                       color: #ffffff;
+               }
+            .bg-3{
+                background-color: #1abc9c;
+                    color: black
+                
+
+            }
+			.btn-xl {
+					padding: 20px 40px;
+					font-size: 40px;
+					border-radius: 20px;
+				}
+            .footer{
+                    background-color: gray;
+                    color: white;
+                    padding-bottom: 20px;
+                    padding-top:20px
+            }
+            .CodeMirror {
+                border: 1px solid #eee;
+                height: 700px;
+                width: 600px;
+            }
+			</style>
+		</head>
+</head>
+<body>
+        <div class = "jumbotron">
+				<h1>Ring of Compiler</h1>
+				<p>The Fun Drinking Game For Alcoholic Programmers</p>
+        </div>
+    
+        <div class="container-fluid bg-1">
+            <h2>Game</h2>
+            <div class = "container">
+                    <div class="panel-group">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                    <a data-toggle="collapse" href="#collapse1">Rules</a>
+                                    </h4>
+                                    </div>
+                                <div id="collapse1" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <h2>todo</h2>
+                                    </div>
+                                    <div class="panel-footer">Todo</div>
+                            </div>
+                        </div>
+                    </div>      
+        </div>
+        <div class="container-fluid bg-2 text-center">
+            <h3>Task</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi faucibus ante eu pharetra sagittis. Interdum et malesuada fames ac ante ipsum primis in faucibus. Curabitur ut pretium ligula. Morbi scelerisque mollis massa sed semper. Vivamus pellentesque, velit et sollicitudin accumsan, tellus odio elementum nibh, et tempus nunc mi vitae orci. Duis quis justo risus. Aliquam erat volutpat. Aenean non placerat lacus. Nullam facilisis at est at egestas. Sed lobortis nisl et cursus porta. Maecenas quis laoreet massa, at ullamcorper purus. Fusce pharetra nec ante gravida euismod. Suspendisse lobortis urna et tellus mattis, non tempus metus venenatis. Aenean et erat tortor.
+                <br>
+                <br>
+                Nam at consequat dolor, ac sodales est. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam tempus nec erat ac egestas. Nunc tempus turpis justo, nec consequat ipsum blandit quis. Quisque eu tincidunt magna, eu hendrerit felis. Pellentesque tincidunt dui vel consectetur rhoncus. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+                <br>
+                <br>    
+            </p>     
+        </div>
+        <!--user input and interpret-->
+        <div class =  "container-fluid bg-1">
+            <div class = "row">
+                    <div class="col-sm-6">
+                            <h2>test</h2>
+                            <div class = "container-fluid bg-3">
+                                <textarea class="codemirror-textarea"></textarea>
+                            </div>
+                    
+                            
+                    </div>
+                    
+                    <div class="col-sm-6">
+                            <h2>test</h2>
+                            <div class = "container-fluid text-center bg-3">
+                                <textarea name="interpretfield" style="width:600px;height:700px;"></textarea>
+                            </div>
+                              
+                    </div>     
+            </div> 
+        </div>
+    <!--footer-->
+    <div class = "container-fluid footer text-center" id = "footer">
+        <h3>Samuel King and Adam Kulesza</h3>
+    </div>
+
+    <!--JS-->
+    <script type = "text/javascript" src= "js/jquery.min.js"></script>
+    <script type = "text/javascript" src= "plugin/codemirror/lib/codemirror.js"></script>
+    <script type = "text/javascript" src= "js/default.js"></script>
+</body>
+</html>
+
