@@ -6,41 +6,48 @@
 	<title>Ring of Compiler</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    
+
     <link rel="stylesheet" type = "text/css" href= "plugin/codemirror/lib/codemirror.css">
     <script src="plugin/codemirror/lib/codemirror.js"></script>
     <script src="plugin/codemirror/mode/python/python.js"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    
+
 	<style>
-			.bg-1 { 
-                    
-					 background-color: #1abc9c; /* Green */
+			.bg-1 {
+
+					 background-color: #56b447; /* Green */
 						color: #ffffff;
-                    padding-left: 20px;
-                    padding-right: 20px;
-                    padding-bottom: 20px;
 				}
-            .bg-2 { 
+            .padding{
+                padding-left: 200px;
+                padding-right: 200px;
+                padding-bottom: 20px;
+                padding-top:10px
+            }
+            .bg-2 {
                     text-align: justify;
                     background-color:grey; /* Green */
                        color: #ffffff;
                }
             .bg-3{
-                background-color: #1abc9c;
+                background-color: #56b447;
                     color: black
-                
+
 
             }
+            .bg-4{
+                background-color: gray;
+                    color: white
+            }
 			.btn-xl {
-					padding: 20px 40px;
-					font-size: 40px;
+					padding: 30px 40px;
+					font-size: 50px;
 					border-radius: 20px;
 				}
             .footer{
-                    background-color: gray;
+                    background-color: black;
                     color: white;
                     padding-bottom: 20px;
                     padding-top:20px
@@ -50,15 +57,30 @@
                 height: 700px;
                 width: 600px;
             }
+            .btn-submit{
+                    padding: 10px 30px;
+					font-size: 3-px;
+					border-radius: 10px;
+
+            }
+
 			</style>
 		</head>
 </head>
 <body>
         <div class = "jumbotron">
-				<h1>Ring of Compiler</h1>
-				<p>The Fun Drinking Game For Alcoholic Programmers</p>
+            <div class = "row">
+                <div class="col-sm-3">
+                    <img alt="there is supposed to be an image here" id="logo" style="height: 150px; width: 400px; padding-left: 5px" src="logo.original.png">
+                </div>
+                <div class="col-sm-9">
+                        <h1>Ring of Compiler</h1>
+                        <p>The Fun Drinking Game For Alcoholic Programmers</p>
+                </div>
+            </div>
+
         </div>
-    
+
         <div class="container-fluid bg-1">
             <h2>Game</h2>
             <div class = "container">
@@ -76,42 +98,63 @@
                                     <div class="panel-footer">Todo</div>
                             </div>
                         </div>
-                    </div>      
+                    </div>
+        </div>
         </div>
         <div class="container-fluid bg-2 text-center">
-            <h3>Task</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi faucibus ante eu pharetra sagittis. Interdum et malesuada fames ac ante ipsum primis in faucibus. Curabitur ut pretium ligula. Morbi scelerisque mollis massa sed semper. Vivamus pellentesque, velit et sollicitudin accumsan, tellus odio elementum nibh, et tempus nunc mi vitae orci. Duis quis justo risus. Aliquam erat volutpat. Aenean non placerat lacus. Nullam facilisis at est at egestas. Sed lobortis nisl et cursus porta. Maecenas quis laoreet massa, at ullamcorper purus. Fusce pharetra nec ante gravida euismod. Suspendisse lobortis urna et tellus mattis, non tempus metus venenatis. Aenean et erat tortor.
+            <h3>{{ taskName }}</h3>
+            <p>
+							{{ taskDescription }}
                 <br>
                 <br>
-                Nam at consequat dolor, ac sodales est. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam tempus nec erat ac egestas. Nunc tempus turpis justo, nec consequat ipsum blandit quis. Quisque eu tincidunt magna, eu hendrerit felis. Pellentesque tincidunt dui vel consectetur rhoncus. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+                	{{ taskIO }}
                 <br>
-                <br>    
-            </p>     
+                <br>
+
+            </p>
         </div>
         <!--user input and interpret-->
-        <div class =  "container-fluid bg-1">
+        <div class =  "container-fluid bg-1 padding">
             <div class = "row">
-                    <div class="col-sm-6">
-                            <h2>test</h2>
+                    <div class="col-sm-6 nopaddingright">
+                            <h2 class = "text-center">Your Code Here</h2>
                             <div class = "container-fluid bg-3">
-                                <textarea class="codemirror-textarea"></textarea>
+															<form action='game' method='POST' id='userInput'>
+                                <textarea id="codemirror-textarea" name="codemirror-textarea" form='userInput'></textarea>
+																{% csrf_token %}
+															</form>
+                                <div class = "container padding" >
+                                        <button id = "button-submit" type = "submit" class="btn-warning btn-submit" form='userInput'>Submit</button>
+                                </div>
                             </div>
-                    
-                            
+
+
+
+
                     </div>
-                    
+
                     <div class="col-sm-6">
-                            <h2>test</h2>
+                            <h2 class = "text-center">Output</h2>
                             <div class = "container-fluid text-center bg-3">
-                                <textarea name="interpretfield" style="width:600px;height:700px;"></textarea>
+                                <textarea readonly id="interpretfield" style="width:600px;height:700px;"></textarea>
                             </div>
-                              
-                    </div>     
-            </div> 
+
+                    </div>
+            </div>
         </div>
+        <div class = "container-fluid bg-4 padding">
+                <div class = "row">
+                        <h2>Consequences</h2>
+                        <div class="col-sm-12">
+                                <textarea id="interpretfield" style="width:1440px;height:200px;color: black">{{ consequence }}</textarea>
+                        </div>
+                </div>
+        </div>
+    </div>
     <!--footer-->
-    <div class = "container-fluid footer text-center" id = "footer">
-        <h3>Samuel King and Adam Kulesza</h3>
+    <div class = "container-fluid footer" id = "footer">
+
+        <h3> A Hacknotts Projecy by Samuel King and Adam Kulesza</h3>
     </div>
 
     <!--JS-->
@@ -120,4 +163,3 @@
     <script type = "text/javascript" src= "js/default.js"></script>
 </body>
 </html>
-

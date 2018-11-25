@@ -57,3 +57,8 @@ for line in testSource:
         currEntry+=line
 
 testDest.write(json.dumps(testEntries))
+
+taskSource.close()
+taskDest.close()
+testSource.close()
+testDest.close()
