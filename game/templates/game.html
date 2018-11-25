@@ -15,6 +15,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 	<style>
+
 			.bg-1 {
 
 					 background-color: #56b447; /* Green */
@@ -24,7 +25,7 @@
                 padding-left: 200px;
                 padding-right: 200px;
                 padding-bottom: 20px;
-                padding-top:10px
+                padding-top:0px
             }
             .bg-2 {
                     text-align: justify;
@@ -39,6 +40,10 @@
             }
             .bg-4{
                 background-color: gray;
+                    color: white
+            }
+            .bg-5{
+                background-color: red;
                     color: white
             }
 			.btn-xl {
@@ -63,6 +68,9 @@
 					border-radius: 10px;
 
             }
+            .margin{
+                border-right: 4px groove black;
+            }
 
 			</style>
 		</head>
@@ -75,32 +83,13 @@
                 </div>
                 <div class="col-sm-9">
                         <h1>Ring of Compiler</h1>
-                        <p>The Fun Drinking Game For Alcoholic Programmers</p>
+                        <p>You Program Better When You're Drunk</p>
                 </div>
             </div>
 
         </div>
 
-        <div class="container-fluid bg-1">
-            <h2>Game</h2>
-            <div class = "container">
-                    <div class="panel-group">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                    <a data-toggle="collapse" href="#collapse1">Rules</a>
-                                    </h4>
-                                    </div>
-                                <div id="collapse1" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        <h2>todo</h2>
-                                    </div>
-                                    <div class="panel-footer">Todo</div>
-                            </div>
-                        </div>
-                    </div>
-        </div>
-        </div>
+
         <div class="container-fluid bg-2 text-center">
             <h3>{{ taskName }}</h3>
             <p>
@@ -112,20 +101,30 @@
                 <br>
 
             </p>
+            <div class = "text-center bg-5 font-size:18pt">
+                <div id="display">
+                    <!--do not populate-->
+                </div>
+            </div>
         </div>
         <!--user input and interpret-->
-        <div class =  "container-fluid bg-1 padding">
+        <div class =  "container-fluid bg-1 padding padding-top:20px">
+
+        </div>
+        <div class =  "container-fluid bg-1 padding padding-top:20px">
             <div class = "row">
-                    <div class="col-sm-6 nopaddingright">
+
+                    <div class="col-sm-6 margin padding-right = 0px">
                             <h2 class = "text-center">Your Code Here</h2>
                             <div class = "container-fluid bg-3">
-															<form action='game' method='POST' id='userInput'>
-                                <textarea id="codemirror-textarea" name="codemirror-textarea" form='userInput'>{{ code }}</textarea>
-																{% csrf_token %}
-															</form>
-                                <div class = "container padding" >
-                                        <button id = "button-submit" type = "submit" class="btn-warning btn-submit" form='userInput'>Submit</button>
-                                </div>
+                                <form action='game' method='POST' id='userInput'>
+                                    <textarea id="codemirror-textarea" name="codemirror-textarea"  form='userInput'>{{ code }}</textarea>
+                                    {% csrf_token %}
+                                    </form>
+
+                            </div>
+                            <div class = "container padding">
+                                <button id = "button-submit" type = "submit" class="btn-success btn-submit" form='userInput'>Submit</button>
                             </div>
 
 
@@ -141,25 +140,64 @@
 
                     </div>
             </div>
+
         </div>
         <div class = "container-fluid bg-4 padding">
                 <div class = "row">
                         <h2>Consequences</h2>
                         <div class="col-sm-12">
-                                <textarea id="interpretfield" style="width:1440px;height:200px; color: black">{{ consequence }}</textarea>
+                                <textarea id="interpretfield" readonly style="width:1440px;height:200px;color: black">{{ consequence }}</textarea>
                         </div>
                 </div>
         </div>
     </div>
+    <div class= "container-fluid text-center bg-1">
+        <h2>How to Play</h2>
+        <p>you have 5 minutes to complete the coding challenge, write your code in the box marked my code and hit submit</p>
+        <p>The test program will run a number of tests on your program to ensure it produces the corret output</p>
+        <p>If your program fails any of these tess a consequence will be given in the consequence box!</p>
+        <p>Should you fail to complete the task in the time there will be a much greater penalty!</p>
+        <h2>Good Luck Programmers!</h2>
+    </div>
     <!--footer-->
     <div class = "container-fluid footer" id = "footer">
 
-        <h3> A Hacknotts Projecy by Samuel King and Adam Kulesza</h3>
+        <h3> A Hacknotts Project by Samuel King and Adam Kulesza</h3>
     </div>
 
     <!--JS-->
-    <script type="text/javascript" src='/static/js/jquery.min.js'></script>
-    <script type="text/javascript" src='/static/plugin/codemirror/lib/codemirror.js'></script>
-    <script type="text/javascript" src='/static/js/default.js'></script>
+    <script>
+        function CountDown(duration, display) {
+        if (!isNaN(duration)) {
+            var timer = duration, minutes, seconds;
+
+          var interVal=  setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                $(display).html("<h2>" + minutes + "m : " + seconds + "s" + "</h2>");
+                if (--timer < 0) {
+                    timer = duration;
+                   SubmitFunction();
+                   $('#display').empty();
+                   clearInterval(interVal)
+                }
+                },1000);
+        }
+    }
+
+    function SubmitFunction(){
+    $('form').submit();
+
+    }
+
+     CountDown(300,$('#display'));
+    </script>
+    <script type = "text/javascript" src= "/static/js/jquery.min.js"></script>
+    <script type = "text/javascript" src= "/static/plugin/codemirror/lib/codemirror.js"></script>
+    <script type = "text/javascript" src= "/static/js/default.js"></script>
 </body>
 </html>

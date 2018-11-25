@@ -10,52 +10,61 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<style>
 			.bg-1 {
-					padding-top: 10px;
-					 background-color: #1abc9c; /* Green */
-						color: #ffffff;
-				}
+
+				background-color: #56b447; /* Green */
+				color: #ffffff;
+			}
 			.btn-xl {
 					padding: 20px 40px;
 					font-size: 40px;
 					border-radius: 20px;
 				}
-			.footer{
-                    background-color: gray;
+				.footer{
+                    background-color: black;
                     color: white;
                     padding-bottom: 20px;
                     padding-top:20px
             }
+
 			</style>
 		</head>
 </head>
 <body>
 		<div class = "jumbotron">
-				<h1>Ring of Compiler</h1>
-				<p>The fun drinking game for alcoholic programmers</p>
-		</div>
-		<div class="container-fluid bg-1">
-				<h2>Click Button to Start</h2>
+				<div class = "row">
+					<div class="col-sm-3">
+						<img alt="there is supposed to be an image here" id="logo" style="height: 150px; width: 400px; padding-left: 5px" src="/static/logos/logo.original.png">
+					</div>
+					<div class="col-sm-9">
+							<h1>Ring of Compiler</h1>
+							<p>You Program Better When You're Drunk</p>
+					</div>
+				</div>
+
 			</div>
+		<div class="container-fluid bg-1">
+			<h2 class>What is Ring of Compiler?</h2>
+			<h3>Ring of Compiler is the ultimate drunk coding challenge (probably the only drunk coding challenge apart from trying to complete your PGA coursework after a heavy night out at Rock City.)
+			the aim of the game is to complete the program and produce the required output in 5:00 minutes and submit it without any errors.
+			But be warned there are alcohol themed consequences for any errors and even greater consequences for not finishing!
+			</h3>
+			<div class="container-fluid text-center bg-1">
+					<img alt="there is supposed to be an image here" id="logo" style="height: 300px; width: 700px; padding-left: 5px" src="/static/logos/letsgetmortal.jpg">
+
+			</div>
+
+		</div>
+
 		<div class="container-fluid bg-1 text-center">
+			<h2><strong>Click Button to Start</strong> </h2>
 			<form action='/game' method='GET'>
 						<button id = "button-start" type = "submit" class="btn-xl btn-success">Start Game</button>
 			</form>
 		</div>
-		<div class="container-fluid bg-1">
-			 	<h2>What is Ring of Compiler?</h2>
-				<h2>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi faucibus ante eu pharetra sagittis. Interdum et malesuada fames ac ante ipsum primis in faucibus. Curabitur ut pretium ligula. Morbi scelerisque mollis massa sed semper. Vivamus pellentesque, velit et sollicitudin accumsan, tellus odio elementum nibh, et tempus nunc mi vitae orci. Duis quis justo risus. Aliquam erat volutpat. Aenean non placerat lacus. Nullam facilisis at est at egestas. Sed lobortis nisl et cursus porta. Maecenas quis laoreet massa, at ullamcorper purus. Fusce pharetra nec ante gravida euismod. Suspendisse lobortis urna et tellus mattis, non tempus metus venenatis. Aenean et erat tortor.
-					<br>
-					Nam at consequat dolor, ac sodales est. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam tempus nec erat ac egestas. Nunc tempus turpis justo, nec consequat ipsum blandit quis. Quisque eu tincidunt magna, eu hendrerit felis. Pellentesque tincidunt dui vel consectetur rhoncus. Interdum et malesuada fames ac ante ipsum primis in faucibus.
-					<br>
-					Morbi id enim ut arcu facilisis congue. Fusce pharetra elementum erat. Pellentesque in quam ac nunc pellentesque auctor. Morbi lectus nibh, maximus sit amet interdum in, finibus non mauris. Quisque gravida arcu et consequat tincidunt. Praesent sed nisl dolor. Sed dictum ullamcorper interdum.
-					<br>
-					Ut congue sed felis ac laoreet. Sed quis justo vel mi fringilla fermentum. Nullam vulputate tristique risus, a accumsan felis. Praesent elit neque, cursus a interdum imperdiet, consequat eget erat. Sed finibus tincidunt arcu, id scelerisque nisi venenatis non. Fusce accumsan tellus urna, eget ultrices nunc aliquam at. Curabitur massa tortor, rhoncus vitae est nec, pulvinar placerat tortor. Curabitur id pharetra leo, vel tincidunt augue. Nulla eu ante in lacus elementum ultrices. Integer ultrices urna vitae est fermentum, in congue dolor semper. Vivamus placerat luctus aliquet. Etiam euismod sem purus, et euismod nulla blandit vel. Proin id cursus quam. Nulla pellentesque, ligula id euismod convallis, lorem libero feugiat erat, id condimentum est mauris at metus. Mauris et volutpat diam.
 
-					Integer ultrices tempus tincidunt. Morbi cursus magna vel mi feugiat, id faucibus leo facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sapien dui, efficitur eu sapien non, bibendum consectetur sapien. Praesent pulvinar semper blandit. Nunc sed dolor vehicula, molestie leo vitae, facilisis mi. Ut finibus quam at dignissim auctor. Proin ultricies nisi ut lectus lacinia, non dapibus sem pretium. Ut accumsan ut urna sed vulputate. Curabitur lacus urna, fringilla a risus porta, pretium iaculis dui. Maecenas placerat vulputate risus eu eleifend. Aenean semper justo diam, quis lobortis erat tincidunt sit amet. Sed odio purus, interdum in vehicula sit amet, sodales ut leo. Nulla facilisi. Maecenas tristique molestie semper.</h2>
-			</div>
 		<!--footer-->
-			<div class = "container-fluid footer text-center" id = "footer">
-				<h3>Samuel King and Adam Kulesza</h3>
+			<div class = "container-fluid footer" id = "footer">
+				<h3> A Hacknotts Project by Samuel King and Adam Kulesza</h3>
 			</div>
 
 </body>
