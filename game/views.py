@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from game.models import Task
-from random import choice
+from random import randint
 
 from game.models import Task, Test
 
@@ -14,39 +14,30 @@ consequenceMsgs = {0:'No consequences! The ouput was correct.',
 def homePage(request):
     return render(request,'index.htm')
 
-taskIDsNotVisited = []
+
 def gamePage(request):
     if request.method == 'POST':
         userCode = request.POST['codemirror-textarea']
         tests = Test.objects.filter(task=request.session['currTaskID'])
+        taskToServe = Task.objects.get(pk=request.session['currTaskID'])
+        taskDescription = (f'INPUT:\n{taskToServe.inputDesription}\n\nOUTPUT:\n{taskToServe.outputDescription}')
         for test in tests:
             testReturn = testCode(userCode,test.input,test.output)
-            if testReturn == 1:
+            if testReturn:
                 # return response filled with old code consequenceMsgs[1] and
                 # message that output was wrong
-                taskToServe = Task.objects.get(pk=request.session['currTaskID'])
-                taskDescription = (f'INPUT:\n{taskToServe.inputDesription}\n\nOUTPUT:\n{taskToServe.outputDescription}')
-                return render(request,'game.html',{'taskName':taskToServe.problemName,'taskDescription':taskToServe.problemDesciption,'taskIO':taskDescription,'consequence':consequenceMsgs[1]})
-            if testReturn == 2:
-                # return response filled with old code consequenceMsgs[2] and
-                # the error message
-                taskToServe = Task.objects.get(pk=request.session['currTaskID'])
-                taskDescription = (f'INPUT:\n{taskToServe.inputDesription}\n\nOUTPUT:\n{taskToServe.outputDescription}')
-                return render(request,'game.html',{'taskName':taskToServe.problemName,'taskDescription':taskToServe.problemDesciption,'taskIO':taskDescription,'consequence':consequenceMsgs[2]})
+                return render(request,'game.html',{'taskName':taskToServe.problemName,'taskDescription':taskToServe.problemDesciption,'taskIO':taskDescription,'consequence':consequenceMsgs[testReturn],'code':userCode})
         # return response with blank code consequenceMsgs[0] update request.session['currTaskID']
-        chosenTaskID = choice(taskIDsNotVisited)
+        chosenTaskID = randint(1,Task.objects.count())
         request.session['currTaskID']=chosenTaskID
-        taskIDsNotVisited.remove(chosenTaskID)
         taskToServe = Task.objects.get(pk=chosenTaskID)
         taskDescription = (f'INPUT:\n{taskToServe.inputDesription}\n\nOUTPUT:\n{taskToServe.outputDescription}')
-        return render(request,'game.html',{'taskName':taskToServe.problemName,'taskDescription':taskToServe.problemDesciption,'taskIO':taskDescription,'consequence':consequenceMsgs[0]})
+        return render(request,'game.html',{'taskName':taskToServe.problemName,'taskDescription':taskToServe.problemDesciption,'taskIO':taskDescription,'consequence':consequenceMsgs[0],'code':''})
 
     taskCount = Task.objects.count()
-    taskIDsNotVisited = list(range(1,taskCount+1))
 
-    chosenTaskID = choice(taskIDsNotVisited)
+    chosenTaskID = randint(1,taskCount)
     request.session['currTaskID']=chosenTaskID
-    taskIDsNotVisited.remove(chosenTaskID)
 
     taskToServe = Task.objects.get(pk=chosenTaskID)
     taskDescription = (f'INPUT:\n{taskToServe.inputDesription}\n\nOUTPUT:\n{taskToServe.outputDescription}')

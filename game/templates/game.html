@@ -120,7 +120,7 @@
                             <h2 class = "text-center">Your Code Here</h2>
                             <div class = "container-fluid bg-3">
 															<form action='game' method='POST' id='userInput'>
-                                <textarea id="codemirror-textarea" name="codemirror-textarea" form='userInput'></textarea>
+                                <textarea id="codemirror-textarea" name="codemirror-textarea" form='userInput'>{{ code }}</textarea>
 																{% csrf_token %}
 															</form>
                                 <div class = "container padding" >
