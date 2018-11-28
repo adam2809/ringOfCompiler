@@ -4,7 +4,7 @@ from random import randint
 
 from game.models import Task, Test
 
-from frameworkTest import test as testCode
+from game.testingSystem.testingSystem import ProgramTest
 
 #TODO these are debug messages change them for something fun at the end
 consequenceMsgs = {0:'No consequences! The ouput was correct.',
