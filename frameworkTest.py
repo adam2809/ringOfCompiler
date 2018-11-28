@@ -1,8 +1,8 @@
 import os
 
-def printFile(file):
-    for line in file:
-        print(line)
+# def printFile(file):
+#     for line in file:
+#         print(line)
 
 def test(code,input,desiredOutput):
     programFilename = 'temp.py'
@@ -11,7 +11,7 @@ def test(code,input,desiredOutput):
     #Fix this shitty hack as quick as possible
     inputFilename = 'tempInput.txt'
 
-    print(f'code:\n{code}\ninput:\n{input}\ndesi:\n{desiredOutput}')
+    # print(f'code:\n{code}\ninput:\n{input}\ndesi:\n{desiredOutput}')
 
     inputFile = open(inputFilename,'w+')
     inputFile.write(input)

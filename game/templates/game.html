@@ -91,7 +91,7 @@
 
 
         <div class="container-fluid bg-2 text-center">
-            <h3>{{ taskName }}</h3>
+            <h3 id='taskName'>{{ taskName }}</h3>
             <p>
 							{{ taskDescription }}
                 <br>
@@ -120,7 +120,7 @@
                                 <form action='game' method='POST' id='userInput'>
                                     <textarea id="codemirror-textarea" name="codemirror-textarea"  form='userInput'>{{ code }}</textarea>
                                     {% csrf_token %}
-                                    </form>
+                                </form>
 
                             </div>
                             <div class = "container padding">
@@ -146,7 +146,9 @@
                 <div class = "row">
                         <h2>Consequences</h2>
                         <div class="col-sm-12">
-                                <textarea id="interpretfield" readonly style="width:1440px;height:200px;color: black">{{ consequence }}</textarea>
+																<!-- Changed id if this textarea not sure if it
+																will cause problems -->
+                                <textarea id="interpretfieldcons" readonly style="width:1440px;height:200px;color: black">{{ consequence }}</textarea>
                         </div>
                 </div>
         </div>

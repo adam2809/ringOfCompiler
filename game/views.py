@@ -6,9 +6,10 @@ from game.models import Task, Test
 
 from frameworkTest import test as testCode
 
+#TODO these are debug messages change them for something fun at the end
 consequenceMsgs = {0:'No consequences! The ouput was correct.',
-                   1:'Error! Consequence 1',
-                   2:'Wrong output! Consequence 2',
+                   1:'Wrong output! Consequence 1',
+                   2:'Error! Consequence 2',
                    }
 
 def homePage(request):
