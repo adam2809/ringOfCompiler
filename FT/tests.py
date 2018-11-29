@@ -36,8 +36,11 @@ class HomePageTest(LiveServerTestCase):
                             output='Yes',
                             task=1
                            )
+        Test.objects.create(input='4\n1 1\n2 2\n-1 1\n-2 2',
+                            output='No',
+                            task=1
+                           )
 
-        #Click the start button
         startButton.submit()
 
         Task.objects.create(pk=2,
@@ -49,17 +52,28 @@ class HomePageTest(LiveServerTestCase):
 
         Test.objects.create(input='input for testing',
                             output='TEST',
-                            task=0
+                            task=2
                            )
 
         #insert solution with error, dont change task,  print error message
-        #in output and get consequence 1
+        #in output and get consequence 2
         inputField = self.browser.find_element_by_id('codemirror-textarea')
         inputField.send_keys('print(dupa)')
         submitButton = self.browser.find_element_by_tag_name('button')
         submitButton.click()
 
-        #TODO changed the di of the consequences box but no idea what im doing
+        while(True):
+            waitStart = time()
+            try:
+                inputField = self.browser.find_element_by_id('codemirror-textarea')
+                break
+            except StaleElementReferenceException as e:
+                if time() - waitStart > MAX_WAIT:
+                    raise e
+                    print('Waiting for the page to load')
+        self.assertEqual(inputField.text,'print(dupa)')
+
+        #TODO changed the id of the consequences box but no idea what im doing
         #so this might cause problems
         consequencesBox = self.browser.find_element_by_id('interpretfieldcons')
         self.assertIn('Consequence 2', consequencesBox.text)
@@ -70,22 +84,16 @@ class HomePageTest(LiveServerTestCase):
         outputBox = self.browser.find_element_by_id('interpretfield')
         self.assertIn("NameError: name 'dupa' is not defined",outputBox.text)
 
-        #insert wrong answser, dont change task,print wrong answer in output
-        #and get consequence 2
+        #insert wrong answser, dont change task,print program output in output
+        #and get consequence 1
 
-        while(True):
-            waitStart = time()
-            try:
-                inputField = self.browser.find_element_by_id('codemirror-textarea')
-                break
-            except StaleElementReferenceException as e:
-                if time() - waitStart > MAX_WAIT:
-                    raise e
-                print('Waiting for the page to load')
 
         inputField.send_keys("print('dupa')")
         submitButton = self.browser.find_element_by_tag_name('button')
         submitButton.click()
+
+        inputField = self.browser.find_element_by_id('codemirror-textarea')
+        self.assertEqual(inputField.text, "print('dupa')")
 
         consequencesBox = self.browser.find_element_by_id('interpretfieldcons')
         self.assertIn('Consequence 1', consequencesBox.text)
@@ -93,5 +101,44 @@ class HomePageTest(LiveServerTestCase):
         taskNameBox = self.browser.find_element_by_id('taskName')
         self.assertEqual(taskNameBox.text,'Find Extra One')
 
+        #The output here should be roughly like this:
+        #TEST 1:
+        #{output of users program}``
+        #for input:
+        #{input from Test database table}
+        #
+        #TEST 2:
+        #{output of users program}
+        #for input:
+        #{input from Test database table}
         outputBox = self.browser.find_element_by_id('interpretfield')
         self.assertIn('dupa',outputBox.text)
+        self.assertIn('TEST 2',outputBox.text)
+
+        #insert good solution should output program output in output,
+        #get conequence 0 and serve new task
+        code = \
+        '''n = int(input())
+        l = []
+        for i in range(n)
+            l.append(input())
+        if n == 3:
+            print('Yes')
+        else:
+            print('No')'''
+        inputField.send_keys(code)
+        submitButton = self.browser.find_element_by_tag_name('button')
+        submitButton.click()
+
+        inputField = self.browser.find_element_by_id('codemirror-textarea')
+        self.assertEqual(inputField.text, '')
+
+        consequencesBox = self.browser.find_element_by_id('interpretfieldcons')
+        self.assertIn('Consequence 0', consequencesBox.text)
+
+        taskNameBox = self.browser.find_element_by_id('taskName')
+        self.assertEqual(taskNameBox.text,'Test problem')
+
+        outputBox = self.browser.find_element_by_id('interpretfield')
+        self.assertIn('Yes',outputBox.text)
+        self.assertIn('TEST 2',outputBox.text)

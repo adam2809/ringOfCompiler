@@ -59,6 +59,7 @@ class ProgramTest():
 
         tempOutLogFile = open(self.outLogFilename,'r')
         outString = tempOutLogFile.read()
+        tempOutLogFile.close()
         if outString[:-1] != self.output:
             return 1
         return 0

@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from game.models import Task
-from random import randint
+
+from random import choice
 
 from game.models import Task, Test
 
@@ -17,6 +17,33 @@ def homePage(request):
 
 
 def gamePage(request):
+    taskCount = Task.objects.count()
+    request.session['taskIDsNotChosen'] = list(range(1, taskCount + 1))
+    chosenTaskID = choice(request.session['taskIDsNotChosen'])
+    request.session['currTaskID'] = chosenTaskID
+    request.session['taskIDsNotChosen'].remove(chosenTaskID)
+
+    taskToServe = Task.objects.get(pk=chosenTaskID)
+    IODescription = (f'INPUT:\n{taskToServe.inputDesription}\n\n \
+                       OUTPUT:\n{taskToServe.outputDescription}')
+    templateDict = {}
+    templateDict['taskName'] = taskToServe.problemName
+    templateDict['taskDescription'] = taskToServe.problemDesciption
+    templateDict['taskIO'] = IODescription
+    templateDict['consequence'] = ''
+    templateDict['code'] = ''
+    templateDict['output'] = ''
+
+    return render(request,'game.html',templateDict)
+
+
+
+
+
+
+
+
+def shit(request):
     if request.method == 'POST':
         userCode = request.POST['codemirror-textarea']
         tests = Test.objects.filter(task=request.session['currTaskID'])
