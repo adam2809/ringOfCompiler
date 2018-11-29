@@ -17,6 +17,42 @@ def homePage(request):
 
 
 def gamePage(request):
+    if request.method == 'POST':
+        userCode = request.POST['codemirror-textarea']
+        tests = Test.objects.filter(task=request.session['currTaskID'])
+        outputText = ''
+        for i, test in enumerate(tests):
+            progTest = ProgramTest(userCode,test.input,test.output)
+            outputText += \
+            f'''TEST {i} output:
+            {progTest.run()}
+            For input:
+            {test.input}\n\n'''
+            testReturn = test.test()
+            if testReturn:
+                request.session['currTemplateDict']['output'] = outputText
+                request.session['currTemplateDict']['code'] = userCode
+                request.session['currTemplateDict']['consequence'] = \
+                                                    consequenceMsgs[testReturn]
+                return render(request,'game.html', \
+                                            request.session['currTemplateDict'])
+        #TODO rapair code repetition
+        chosenTaskID = choice(request.session['taskIDsNotChosen'])
+        taskToServe = Task.objects.get(pk=chosenTaskID)
+        request.session['taskIDsNotChosen'].remove(chosenTaskID)
+
+        IODescription = (f'INPUT:\n{taskToServe.inputDesription}\n\n \
+                           OUTPUT:\n{taskToServe.outputDescription}')
+        request.session['currTemplateDict']['taskName'] = \
+                                                         taskToServe.problemName
+        request.session['currTemplateDict']['taskDescription'] = \
+                                                   taskToServe.problemDesciption
+        request.session['currTemplateDict']['taskIO'] = IODescription
+        request.session['currTemplateDict']['code'] = ''
+        request.session['currTemplateDict']['consequence'] = consequenceMsgs[0]
+        request.session['currTemplateDict']['output'] = outputText
+        return render(request,'game.html',request.session['currTemplateDict'])
+
     taskCount = Task.objects.count()
     request.session['taskIDsNotChosen'] = list(range(1, taskCount + 1))
     chosenTaskID = choice(request.session['taskIDsNotChosen'])
@@ -30,9 +66,11 @@ def gamePage(request):
     templateDict['taskName'] = taskToServe.problemName
     templateDict['taskDescription'] = taskToServe.problemDesciption
     templateDict['taskIO'] = IODescription
-    templateDict['consequence'] = ''
     templateDict['code'] = ''
+    templateDict['consequence'] = ''
     templateDict['output'] = ''
+
+    request.session['currTemplateDict'] = templateDict
 
     return render(request,'game.html',templateDict)
 
