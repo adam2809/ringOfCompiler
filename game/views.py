@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from random import choice
 
@@ -12,99 +12,56 @@ consequenceMsgs = {0:'No consequences! The ouput was correct.',
                    2:'Error! Consequence 2',
                    }
 
+
 def homePage(request):
+    taskCount = Task.objects.count()
+    request.session['taskIDsNotChosen'] = list(range(1, taskCount + 1))
+    request.session['currTemplateDict'] = {}
+    request.session['currTemplateDict']['consequence'] = ''
     return render(request,'index.htm')
 
 
-def gamePage(request):
-    if request.method == 'POST':
-        userCode = request.POST['codemirror-textarea']
-        tests = Test.objects.filter(task=request.session['currTaskID'])
-        outputText = ''
-        for i, test in enumerate(tests):
-            progTest = ProgramTest(userCode,test.input,test.output)
-            outputText += \
-            f'''TEST {i} output:
-            {progTest.run()}
-            For input:
-            {test.input}\n\n'''
-            testReturn = test.test()
-            if testReturn:
-                request.session['currTemplateDict']['output'] = outputText
-                request.session['currTemplateDict']['code'] = userCode
-                request.session['currTemplateDict']['consequence'] = \
-                                                    consequenceMsgs[testReturn]
-                return render(request,'game.html', \
-                                            request.session['currTemplateDict'])
-        #TODO rapair code repetition
-        chosenTaskID = choice(request.session['taskIDsNotChosen'])
-        taskToServe = Task.objects.get(pk=chosenTaskID)
-        request.session['taskIDsNotChosen'].remove(chosenTaskID)
+def testCode(request):
+    userCode = request.POST['codemirror-textarea']
+    tests = Test.objects.filter(task=request.session['currTemplateDict']['currTaskID'])
+    outputText = ''
+    for i, test in enumerate(tests):
+        progTest = ProgramTest(userCode,test.input,test.output)
+        outputText += \
+        f'''TEST {i} output:
+        {progTest.run()}
+        For input:
+        {test.input}\n\n'''
+        testReturn = progTest.test()
+        if testReturn:
+            request.session['currTemplateDict']['output'] = outputText
+            request.session['currTemplateDict']['code'] = userCode
+            request.session['currTemplateDict']['consequence'] = \
+                                                     consequenceMsgs[testReturn]
+            return redirect('/retry')
+        return redirect('/new')
 
-        IODescription = (f'INPUT:\n{taskToServe.inputDesription}\n\n \
-                           OUTPUT:\n{taskToServe.outputDescription}')
-        request.session['currTemplateDict']['taskName'] = \
-                                                         taskToServe.problemName
-        request.session['currTemplateDict']['taskDescription'] = \
-                                                   taskToServe.problemDesciption
-        request.session['currTemplateDict']['taskIO'] = IODescription
-        request.session['currTemplateDict']['code'] = ''
-        request.session['currTemplateDict']['consequence'] = consequenceMsgs[0]
-        request.session['currTemplateDict']['output'] = outputText
-        return render(request,'game.html',request.session['currTemplateDict'])
 
-    taskCount = Task.objects.count()
-    request.session['taskIDsNotChosen'] = list(range(1, taskCount + 1))
+def newTask(request):
     chosenTaskID = choice(request.session['taskIDsNotChosen'])
-    request.session['currTaskID'] = chosenTaskID
-    request.session['taskIDsNotChosen'].remove(chosenTaskID)
-
     taskToServe = Task.objects.get(pk=chosenTaskID)
+    request.session['taskIDsNotChosen'].remove(chosenTaskID)
+    request.session['currTemplateDict']['currTaskID'] = chosenTaskID
     IODescription = (f'INPUT:\n{taskToServe.inputDesription}\n\n \
                        OUTPUT:\n{taskToServe.outputDescription}')
-    templateDict = {}
-    templateDict['taskName'] = taskToServe.problemName
-    templateDict['taskDescription'] = taskToServe.problemDesciption
-    templateDict['taskIO'] = IODescription
-    templateDict['code'] = ''
-    templateDict['consequence'] = ''
-    templateDict['output'] = ''
+    request.session['currTemplateDict']['taskName'] = taskToServe.problemName
+    request.session['currTemplateDict']['taskDescription'] = \
+                                                   taskToServe.problemDesciption
+    request.session['currTemplateDict']['taskIO'] = IODescription
+    request.session['currTemplateDict']['code'] = ''
+    request.session['currTemplateDict']['consequence'] = consequenceMsgs[0] \
+                   if request.session['currTemplateDict']['consequence'] else ''
+    request.session['currTemplateDict']['output'] = ''
 
-    request.session['currTemplateDict'] = templateDict
+    print(request.session['currTemplateDict'])
 
-    return render(request,'game.html',templateDict)
-
-
-
+    return render(request,'game.html',request.session['currTemplateDict'])
 
 
-
-
-
-def shit(request):
-    if request.method == 'POST':
-        userCode = request.POST['codemirror-textarea']
-        tests = Test.objects.filter(task=request.session['currTaskID'])
-        taskToServe = Task.objects.get(pk=request.session['currTaskID'])
-        taskDescription = (f'INPUT:\n{taskToServe.inputDesription}\n\nOUTPUT:\n{taskToServe.outputDescription}')
-        for test in tests:
-            testReturn = testCode(userCode,test.input,test.output)
-            if testReturn:
-                # return response filled with old code consequenceMsgs[1] and
-                # message that output was wrong
-                return render(request,'game.html',{'taskName':taskToServe.problemName,'taskDescription':taskToServe.problemDesciption,'taskIO':taskDescription,'consequence':consequenceMsgs[testReturn],'code':userCode})
-        # return response with blank code consequenceMsgs[0] update request.session['currTaskID']
-        chosenTaskID = randint(1,Task.objects.count())
-        request.session['currTaskID']=chosenTaskID
-        taskToServe = Task.objects.get(pk=chosenTaskID)
-        taskDescription = (f'INPUT:\n{taskToServe.inputDesription}\n\nOUTPUT:\n{taskToServe.outputDescription}')
-        return render(request,'game.html',{'taskName':taskToServe.problemName,'taskDescription':taskToServe.problemDesciption,'taskIO':taskDescription,'consequence':consequenceMsgs[0],'code':''})
-
-    taskCount = Task.objects.count()
-
-    chosenTaskID = randint(1,taskCount)
-    request.session['currTaskID']=chosenTaskID
-
-    taskToServe = Task.objects.get(pk=chosenTaskID)
-    taskDescription = (f'INPUT:\n{taskToServe.inputDesription}\n\nOUTPUT:\n{taskToServe.outputDescription}')
-    return render(request,'game.html',{'taskName':taskToServe.problemName,'taskDescription':taskToServe.problemDesciption,'taskIO':taskDescription,'consequence':''})
+def retryTask(request):
+    return render(request,'game.html',request.session['currTemplateDict'])

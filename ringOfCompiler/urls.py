@@ -23,5 +23,7 @@ from game import views
 
 urlpatterns = [
     url(r'^$', views.homePage),
-    url(r'^game$', views.gamePage),
+    url(r'^test$', views.testCode),
+    url(r'^new$', views.newTask),
+    url(r'^retry$', views.retryTask),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

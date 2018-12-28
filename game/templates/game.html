@@ -117,7 +117,7 @@
                     <div class="col-sm-6 margin padding-right = 0px">
                             <h2 class = "text-center">Your Code Here</h2>
                             <div class = "container-fluid bg-3">
-                                <form action='game' method='POST' id='userInput'>
+                                <form action='test' method='POST' id='userInput'>
                                     <textarea id="codemirror-textarea" name="codemirror-textarea"  form='userInput'>{{ code }}</textarea>
                                     {% csrf_token %}
                                 </form>
@@ -135,7 +135,7 @@
                     <div class="col-sm-6">
                             <h2 class = "text-center">Output</h2>
                             <div class = "container-fluid text-center bg-3">
-                                <textarea readonly id="interpretfield" style="width:600px;height:700px;">{ output }</textarea>
+                                <textarea readonly id="interpretfield" style="width:600px;height:700px;">{{ output }}</textarea>
                             </div>
 
                     </div>
