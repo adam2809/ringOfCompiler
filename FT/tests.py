@@ -34,7 +34,7 @@ class HomePageTest(LiveServerTestCase):
         output='No',
         task=1
         )
-        
+
         self.browser.get(self.live_server_url)
 
         self.assertEqual('Ring of Compiler',self.browser.title)
@@ -45,17 +45,17 @@ class HomePageTest(LiveServerTestCase):
 
         startButton.submit()
 
-        # Task.objects.create(pk=2,
-        #                     problemName='Test problem',
-        #                     problemDesciption='just for tests',
-        #                     inputDesription='this is oooonly a test',
-        #                     outputDescription='FUNctional tests'
-        #                    )
-        #
-        # Test.objects.create(input='input for testing',
-        #                     output='TEST',
-        #                     task=2
-        #                    )
+        Task.objects.create(pk=2,
+                            problemName='Test problem',
+                            problemDesciption='just for tests',
+                            inputDesription='this is oooonly a test',
+                            outputDescription='FUNctional tests'
+                           )
+
+        Test.objects.create(input='input for testing',
+                            output='TEST',
+                            task=2
+                           )
 
         #insert solution with error, dont change task,  print error message
         #in output and get consequence 2
