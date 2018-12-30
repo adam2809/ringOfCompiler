@@ -169,34 +169,35 @@
 
     <!--JS-->
     <script>
-        function CountDown(duration, display) {
-        if (!isNaN(duration)) {
-            var timer = duration, minutes, seconds;
+      function CountDown(duration, display) {
+	  		if (!isNaN(duration)) {
+	      	var timer = duration, minutes, seconds;
 
           var interVal=  setInterval(function () {
-                minutes = parseInt(timer / 60, 10);
-                seconds = parseInt(timer % 60, 10);
+	          minutes = parseInt(timer / 60, 10);
+	          seconds = parseInt(timer % 60, 10);
 
-                minutes = minutes < 10 ? "0" + minutes : minutes;
-                seconds = seconds < 10 ? "0" + seconds : seconds;
+	          minutes = minutes < 10 ? "0" + minutes : minutes;
+	          seconds = seconds < 10 ? "0" + seconds : seconds;
 
-                $(display).html("<h2>" + minutes + "m : " + seconds + "s" + "</h2>");
-                if (--timer < 0) {
-                    timer = duration;
-                   SubmitFunction();
-                   $('#display').empty();
-                   clearInterval(interVal)
-                }
-                },1000);
+	          $(display).html("<h2>" + minutes + "m : " + seconds + "s" + "</h2>");
+	          if (--timer < 0) {
+	             timer = duration;
+	             SubmitFunction();
+	             $('#display').empty();
+	             clearInterval(interVal)
+	          }
+          },1000);
         }
-    }
+    	}
 
-    function SubmitFunction(){
-    $('form').submit();
+		  function SubmitFunction(){
+				var currURL = window.location.href;
+				var base = currURL.substring(0,currURL.indexOf('/'));
+				window.location.replace(base + "/timeout");
+		  }
 
-    }
-
-     CountDown(300,$('#display'));
+		  CountDown(300,$('#display'));
     </script>
     <script type = "text/javascript" src= "/static/js/jquery.min.js"></script>
     <script type = "text/javascript" src= "/static/plugin/codemirror/lib/codemirror.js"></script>

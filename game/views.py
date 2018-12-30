@@ -13,9 +13,13 @@ consequenceMsgs = {0:'No consequences! The ouput was correct.',
                    }
 
 
-def homePage(request):
+def refreshTasks(request):
     taskCount = Task.objects.count()
     request.session['taskIDsNotChosen'] = list(range(1, taskCount + 1))
+
+
+def homePage(request):
+    refreshTasks(request)
     request.session['currTemplateDict'] = {}
     request.session['currTemplateDict']['consequence'] = ''
     return render(request,'index.htm')
@@ -43,6 +47,8 @@ def testCode(request):
 
 
 def newTask(request):
+    if len(request.session['taskIDsNotChosen']) == 0:
+        refreshTasks(request)
     chosenTaskID = choice(request.session['taskIDsNotChosen'])
     taskToServe = Task.objects.get(pk=chosenTaskID)
     request.session['taskIDsNotChosen'].remove(chosenTaskID)

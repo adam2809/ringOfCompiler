@@ -122,30 +122,30 @@ class HomePageTest(LiveServerTestCase):
         #insert good solution should output program output in output,
         #get conequence 0 and serve new task
         code = \
-        '''n = int(input())
-        l = []
-        for i in range(n):
-            l.append(input())
-        if n == 3:
-            print('Yes')
-        else:
-            print('No')'''
+'''n = int(input())
+l = []
+for i in range(n):
+    l.append(input())
+if n == 3:
+    print('Yes')
+else:
+    print('No')'''
         inputField.clear()
         inputField.send_keys(code)
         submitButton = self.browser.find_element_by_tag_name('button')
         submitButton.click()
 
-        # TODO the input field causes indentation errors google how to fix
-
         outputBox = self.browser.find_element_by_id('interpretfield')
-        self.assertIn('Yes',outputBox.text,f"The actual content is {outputBox.text}")
-        self.assertIn('TEST 2',outputBox.text)
+        self.assertEqual('',outputBox.text,f"The actual content is {outputBox.text}")
 
         inputField = self.browser.find_element_by_id('codemirror-textarea')
         self.assertEqual(inputField.text, '')
 
         consequencesBox = self.browser.find_element_by_id('interpretfieldcons')
-        self.assertIn('Consequence 0', consequencesBox.text)
+        self.assertIn('No consequences!', consequencesBox.text)
 
+        # Line 150 will fail 50% of the time as the second task is added to
+        # request.session['taskIDsNotChosen'] by refreshTasks and has a 50%
+        # chance of being chosen TODO fix it
         taskNameBox = self.browser.find_element_by_id('taskName')
         self.assertEqual(taskNameBox.text,'Test problem')
