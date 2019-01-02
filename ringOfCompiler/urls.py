@@ -26,4 +26,5 @@ urlpatterns = [
     url(r'^test$', views.testCode),
     url(r'^new$', views.newTask),
     url(r'^retry$', views.retryTask),
+    url(r'^timeout$', views.timeout),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

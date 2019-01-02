@@ -1,15 +1,19 @@
 from django.shortcuts import render, redirect
+from django.conf import settings
+
+from game.models import Task, Test
+from game.testingSystem.testingSystem import ProgramTest
 
 from random import choice
 
-from game.models import Task, Test
 
-from game.testingSystem.testingSystem import ProgramTest
+
 
 #TODO these are debug messages change them for something fun at the end
 consequenceMsgs = {0:'No consequences! The ouput was correct.',
                    1:'Wrong output! Consequence 1',
                    2:'Error! Consequence 2',
+                   3:'Time is up! Consequence 3',
                    }
 
 
@@ -22,6 +26,7 @@ def homePage(request):
     refreshTasks(request)
     request.session['currTemplateDict'] = {}
     request.session['currTemplateDict']['consequence'] = ''
+    request.session['currTemplateDict']['timeLimit'] = settings.TIME_LIMIT
     return render(request,'index.htm')
 
 
@@ -64,9 +69,12 @@ def newTask(request):
                    if request.session['currTemplateDict']['consequence'] else ''
     request.session['currTemplateDict']['output'] = ''
 
-    print(request.session['currTemplateDict'])
-
     return render(request,'game.html',request.session['currTemplateDict'])
+
+
+def timeout(request):
+    request.session['currTemplateDict']['consequences'] = consequenceMsgs[3]
+    return redirect('/new')
 
 
 def retryTask(request):
