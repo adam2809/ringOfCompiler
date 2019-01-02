@@ -1,11 +1,11 @@
 import os
 
 class ProgramTest():
-    programFilename = 'tempProgram.txt'
-    errorLogFilename = 'tempErrorLog.txt'
-    outLogFilename = 'tempOutLog.txt'
+    programFilename = 'game/testingSystem/tempProgram.py'
+    errorLogFilename = 'game/testingSystem/tempErrorLog.txt'
+    outLogFilename = 'game/testingSystem/tempOutLog.txt'
     #Fix this shitty hack as quick as possible
-    inputFilename = 'tempInput.txt'
+    inputFilename = 'game/testingSystem/tempInput.txt'
 
     def __init__(self,code,input,output):
         self.code = code
