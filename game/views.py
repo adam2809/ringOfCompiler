@@ -67,10 +67,8 @@ def newTask(request):
     request.session['currTemplateDict']['code'] = ''
     currConsequence = request.session['currTemplateDict']['consequence']
     if currConsequence != '' and currConsequence != consequenceMsgs[3]:
-        request.session['currTemplateDict']['consequence'] = consequenceMsgs[1]
+        request.session['currTemplateDict']['consequence'] = consequenceMsgs[0]
     request.session['currTemplateDict']['output'] = ''
-    print(request.session['currTemplateDict']['consequence'] + '\t<<<DEBUG')
-
     return render(request,'game.html',request.session['currTemplateDict'])
 
 

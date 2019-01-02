@@ -57,9 +57,6 @@ class ProgramTest():
         tempOutLogFile = open(self.outLogFilename,'r')
         outString = tempOutLogFile.read()
         tempOutLogFile.close()
-        print('DEBUG:')
-        print(outString.strip())
-        print(self.output.strip())
         if outString.strip() != self.output.strip():
             return 1
         return 0

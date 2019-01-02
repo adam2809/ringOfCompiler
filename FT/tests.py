@@ -1,11 +1,13 @@
 from django.test import LiveServerTestCase
+from django.conf import settings
+
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import StaleElementReferenceException
 
 from game.models import Task, Test
 
-from time import time
+from time import time, sleep
 MAX_WAIT = 10
 
 class HomePageTest(LiveServerTestCase):
@@ -149,3 +151,45 @@ else:
         # chance of being chosen TODO fix it
         taskNameBox = self.browser.find_element_by_id('taskName')
         self.assertEqual(taskNameBox.text,'Test problem')
+
+
+class TimeLimitTest(LiveServerTestCase):
+    TEST_TIME_LIMIT = 1
+
+    def setUp(self):
+        self.browser = webdriver.Firefox()
+        self.browser.implicitly_wait(3)
+
+        self.OG_TIME_LIMIT = settings.TIME_LIMIT
+        settings.TIME_LIMIT = self.TEST_TIME_LIMIT
+
+
+    def tearDown(self):
+        settings.TIME_LIMIT = self.OG_TIME_LIMIT
+        self.browser.quit()
+
+
+    def testTimeLimit(self):
+        Task.objects.create(pk=1,
+        problemName='Find Extra One',
+        problemDesciption='You have n distinct points on a plane, none of them lie on OY axis. Check that there is a point after removal of which the remaining points are located on one side of the OY axis.',
+        inputDesription='The first line contains a single positive integer n (2 ≤ n ≤ 105).\nThe following n lines contain coordinates of the points. The i-th of these lines contains two single integers xi and yi (|xi|, |yi| ≤ 109, xi ≠ 0). No two points coincide.',
+        outputDescription='Print "Yes" if there is such a point, "No" — otherwise.\nYou can print every letter in any case (upper or lower).'
+        )
+
+        Test.objects.create(input='3\n1 1\n-1 -1\n2 -1',
+        output='Yes',
+        task=1
+        )
+        Test.objects.create(input='4\n1 1\n2 2\n-1 1\n-2 2',
+        output='No',
+        task=1
+        )
+
+
+        self.browser.get(self.live_server_url)
+        startButton = self.browser.find_element_by_tag_name('button')
+        startButton.submit()
+        sleep(3)
+        consequencesBox = self.browser.find_element_by_id('interpretfieldcons')
+        self.assertIn('Time is up', consequencesBox.text)
