@@ -65,15 +65,17 @@ def newTask(request):
                                                    taskToServe.problemDesciption
     request.session['currTemplateDict']['taskIO'] = IODescription
     request.session['currTemplateDict']['code'] = ''
-    request.session['currTemplateDict']['consequence'] = consequenceMsgs[0] \
-                   if request.session['currTemplateDict']['consequence'] else ''
+    currConsequence = request.session['currTemplateDict']['consequence']
+    if currConsequence != '' and currConsequence != consequenceMsgs[3]:
+        request.session['currTemplateDict']['consequence'] = consequenceMsgs[1]
     request.session['currTemplateDict']['output'] = ''
+    print(request.session['currTemplateDict']['consequence'] + '\t<<<DEBUG')
 
     return render(request,'game.html',request.session['currTemplateDict'])
 
 
 def timeout(request):
-    request.session['currTemplateDict']['consequences'] = consequenceMsgs[3]
+    request.session['currTemplateDict']['consequence'] = consequenceMsgs[3]
     return redirect('/new')
 
 
