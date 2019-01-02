@@ -20,7 +20,7 @@ class HomePageTest(LiveServerTestCase):
         self.browser.quit()
 
 
-    def testGame(self):
+    def testSingleTask(self):
         Task.objects.create(pk=1,
         problemName='Find Extra One',
         problemDesciption='You have n distinct points on a plane, none of them lie on OY axis. Check that there is a point after removal of which the remaining points are located on one side of the OY axis.',
@@ -146,11 +146,69 @@ else:
         consequencesBox = self.browser.find_element_by_id('interpretfieldcons')
         self.assertIn('No consequences!', consequencesBox.text)
 
-        # Line 150 will fail 50% of the time as the second task is added to
-        # request.session['taskIDsNotChosen'] by refreshTasks and has a 50%
-        # chance of being chosen TODO fix it
-        taskNameBox = self.browser.find_element_by_id('taskName')
-        self.assertEqual(taskNameBox.text,'Test problem')
+
+    def testMultipleTasks(self):
+        Task.objects.create(pk=1,
+        problemName='Find Extra One',
+        problemDesciption='You have n distinct points on a plane, none of them lie on OY axis. Check that there is a point after removal of which the remaining points are located on one side of the OY axis.',
+        inputDesription='The first line contains a single positive integer n (2 ≤ n ≤ 105).\nThe following n lines contain coordinates of the points. The i-th of these lines contains two single integers xi and yi (|xi|, |yi| ≤ 109, xi ≠ 0). No two points coincide.',
+        outputDescription='Print "Yes" if there is such a point, "No" — otherwise.\nYou can print every letter in any case (upper or lower).'
+        )
+        Test.objects.create(input='3\n1 1\n-1 -1\n2 -1',
+        output='Yes',
+        task=1
+        )
+        Test.objects.create(input='4\n1 1\n2 2\n-1 1\n-2 2',
+        output='No',
+        task=1
+        )
+
+        Task.objects.create(pk=2,
+        problemName='Test problem',
+        problemDesciption='just for tests',
+        inputDesription='this is oooonly a test',
+        outputDescription='FUNctional tests'
+        )
+        Test.objects.create(input='input for testing',
+        output='TEST',
+        task=2
+        )
+
+        self.browser.get(self.live_server_url)
+
+        self.assertEqual('Ring of Compiler',self.browser.title)
+
+        startButton = self.browser.find_element_by_tag_name('button')
+        self.assertEqual(startButton.text,'Start Game')
+
+        startButton.submit()
+        names = ('Find Extra One','Test problem')
+        code = \
+'''n = int(input())
+l = []
+for i in range(n):
+    l.append(input())
+if n == 3:
+    print('Yes')
+else:
+    print('No')'''
+        anwsers = (code,'print("TEST")')
+        nameBox = self.browser.find_element_by_id('taskName')
+
+        if nameBox.text == names[0]:
+            chosen = 0
+        else:
+            chosen = 1
+
+        inputField = self.browser.find_element_by_id('codemirror-textarea')
+        inputField.send_keys(anwsers[chosen])
+
+        submitButton = self.browser.find_element_by_tag_name('button')
+        submitButton.click()
+
+        print(chosen)
+        nameBox = self.browser.find_element_by_id('taskName')
+        self.assertEqual(nameBox.text,names[1 - chosen])
 
 
 class TimeLimitTest(LiveServerTestCase):

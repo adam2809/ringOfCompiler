@@ -121,4 +121,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-TIME_LIMIT = 3
+TIME_LIMIT = 5 * 60
